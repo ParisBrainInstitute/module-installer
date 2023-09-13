@@ -1,0 +1,56 @@
+{
+	"name": "Module Installer",
+
+	"namespace": "ICM\\ModuleInstaller",
+
+	"description": "Enables installing external modules from zip files, uploaded or fetched from an url.",
+
+	"framework-version": 7,
+
+	"documentation": "README.md",
+
+	"authors": [		{
+			"name": "Séverine Candelier",
+			"email": "severine.candelier@icm-institute.org",
+			"institution": "ICM - Paris Brain Institute"
+		}
+	],
+
+	"permissions": [
+	],
+	
+	"enable-every-page-hooks-on-system-pages":false,	
+
+	"links": {
+		"project": [
+		],
+		"control-center": [
+			{
+				"name": "Module Installer",
+				"icon": "fas fa-cube fs14",
+				"url": "pages/index.php"
+			}
+		]
+	},
+
+	"no-auth-pages": [
+	],
+
+	"project-settings": [
+
+	],
+
+	"system-settings": [
+
+	],
+
+	"crons": [
+	],
+
+	"compatibility": {
+		"php-version-min": "",
+		"php-version-max": "",
+		"redcap-version-min": "",
+		"redcap-version-max": ""
+	}
+}
