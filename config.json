@@ -28,7 +28,8 @@
 			{
 				"name": "Module Installer",
 				"icon": "fas fa-cube fs14",
-				"url": "pages/index.php"
+				"url": "pages/index.php",
+				"show-header-and-footer": true
 			}
 		]
 	},
