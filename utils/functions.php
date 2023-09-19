@@ -26,3 +26,8 @@ function delete_directory($dir): bool
     }
     return rmdir($dir);
 }
+
+function renderInput(): string
+{
+
+}
