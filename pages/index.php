@@ -1,10 +1,10 @@
 <?php
 global $module;
 
+use ICM\ModuleInstaller\ModuleInstaller;
 use ICM\ModuleInstaller\ModuleInstallerException;
 
-// TODO: Check if the current user is an admin.
-if (!SUPER_USER) { // Not good, we want to test if the current user is an admin. SUPER_USER is not the same as admin.
+if (!ModuleInstaller::isAdminWithModuleInstallPrivileges()) {
     echo RCView::errorBox("You don't have permission to access this page.");
     exit();
 }

@@ -44,6 +44,20 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
     }
 
     /**
+     * Return whether the current user is an admin with module install privileges.
+     * @return bool
+     */
+    public static function isAdminWithModuleInstallPrivileges(): bool
+    {
+        return (
+            // For REDCap 10.1.0+
+            (defined("ACCESS_EXTERNAL_MODULE_INSTALL") && ACCESS_EXTERNAL_MODULE_INSTALL == '1')
+            // For versions prior to REDCap 10.1.0
+            || (!defined("ACCESS_EXTERNAL_MODULE_INSTALL") && defined("SUPER_USER") && SUPER_USER == '1')
+        );
+    }
+
+    /**
      * Create the temporary folder if it does not exist, or clean it (delete everything inside) if it exists.
      *
      * @return void

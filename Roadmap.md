@@ -3,11 +3,11 @@
 ## TO DO List for module_installer_v1.0.0
 
 - [x] Intercept exceptions in index.php, just display errors.
-- [ ] Correctly test if the user has module installation rights
+- [x] Correctly test if the user has module installation rights
 - [x] Validate path and version
 - [ ] Translations (English and French)
 - [x] Clean the temporary directory (at step 1? Module enabling ?)
-- [ ] README, with a fancy gif (Mathilde)
+- [ ] README, with a fancy gif
 - [ ] Tests
 - [ ] Finalize the config.json 
 - [ ] Finalize the LICENCE
