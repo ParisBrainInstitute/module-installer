@@ -17,6 +17,7 @@
 	],
 
 	"permissions": [
+		"redcap_module_system_disable"
 	],
 	
 	"enable-every-page-hooks-on-system-pages":false,	

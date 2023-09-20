@@ -76,7 +76,7 @@ if ($step > 0 && !isset($module_info) ) {
     }
     else {
         $tmp_filename = trim(REDCap::escapeHtml($_POST['tmp_filename']));
-        if (!file_exists(TEMP_FOLDER . '/' . $tmp_filename)) {
+        if (!file_exists($module::TEMP_FOLDER . '/' . $tmp_filename)) {
             $global_errors[] = "The temporary file does not exist anymore. Please provide the ZIP file again.";
             $step = 0;
         }
@@ -107,7 +107,6 @@ $title = '<i class="fas fa-cube"></i> ' . REDCap::escapeHtml('External Module In
 echo RCView::h3(['class' => 'mt-2 mb-3'], $title);
 
 // TODO A Breadcrumb with the current step
-
 
 if (!empty($global_errors)) {
     echo RCView::errorBox(implode('<br>', $global_errors));

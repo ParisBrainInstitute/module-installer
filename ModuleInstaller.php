@@ -8,7 +8,6 @@ include_once 'utils/ModuleInstallerException.php';
 use ICM\ModuleInstaller\ModuleInstallerException;
 
 define('APP_PATH_EXTERNAL_MODULES', dirname(APP_PATH_DOCROOT) . DIRECTORY_SEPARATOR . 'modules');
-define('TEMP_FOLDER', APP_PATH_TEMP . DIRECTORY_SEPARATOR . 'module_installer');
 
 class ModuleInformation
 {
@@ -21,18 +20,42 @@ class ModuleInformation
 
 class ModuleInstaller extends \ExternalModules\AbstractExternalModule
 {
+    const TEMP_FOLDER = APP_PATH_TEMP . DIRECTORY_SEPARATOR . 'module_installer';
+
     public function __construct()
     {
         parent::__construct();
 
-        if (file_exists(TEMP_FOLDER) && !is_dir(TEMP_FOLDER)) {
+        if (file_exists(self::TEMP_FOLDER) && !is_dir(self::TEMP_FOLDER)) {
             throw new ModuleInstallerException("The temporary folder is not a directory.");
         }
-        if (!file_exists(TEMP_FOLDER)) {
+        if (!file_exists(self::TEMP_FOLDER)) {
             // Create the temporary folder
-            if (!mkdir(TEMP_FOLDER, 0777, true)) {
+            if (!mkdir(self::TEMP_FOLDER, 0777, true)) {
                 throw new ModuleInstallerException("The temporary folder could not be created.");
             }
+        }
+    }
+
+    public function redcap_module_system_disable($version)
+    {
+        // Delete the temporary folder
+        delete_directory(self::TEMP_FOLDER);
+    }
+
+    /**
+     * Create the temporary folder if it does not exist, or clean it (delete everything inside) if it exists.
+     *
+     * @return void
+     */
+    public function cleanTempFolder(): void
+    {
+        if (file_exists(self::TEMP_FOLDER) && is_dir(self::TEMP_FOLDER)) {
+            delete_directory(self::TEMP_FOLDER);
+        }
+        // (Re-)create the temporary folder
+        if (!mkdir(self::TEMP_FOLDER, 0777, true)) {
+            throw new ModuleInstallerException("The temporary folder could not be created.");
         }
     }
 
@@ -49,7 +72,7 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
         $temp_filename = bin2hex(random_bytes(16)) . '.zip';
 
         // Move the uploaded file to the temporary location
-        if (!move_uploaded_file($filename, TEMP_FOLDER . '/' . $temp_filename)) {
+        if (!move_uploaded_file($filename, self::TEMP_FOLDER . '/' . $temp_filename)) {
             throw new ModuleInstallerException("The uploaded file could not be moved to a temporary location.");
         }
         return $temp_filename;
@@ -58,17 +81,23 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
     /**
      * Deletes the temporary ZIP file.
      *
-     * @param $temp_filename
+     * @param string $temp_filename
+     * @return void
      */
-    public function deleteTempZipFile($temp_filename)
+    public function deleteTempZipFile(string $temp_filename): void
     {
-        unlink(TEMP_FOLDER . '/' . $temp_filename);
+        unlink(self::TEMP_FOLDER . '/' . $temp_filename);
     }
 
-    public function deleteTempFolder($temp_folder)
+    /**
+     * Delete a temporary folder inside the self::TEMP_FOLDER location.
+     * @param string $temp_folder
+     * @return void
+     */
+    public function deleteTempFolder(string $temp_folder): void
     {
-        if (is_dir(TEMP_FOLDER . '/' . $temp_folder)) {
-            delete_directory(TEMP_FOLDER . '/' . $temp_folder);
+        if (!empty($temp_folder) && is_dir(self::TEMP_FOLDER . '/' . $temp_folder)) {
+            delete_directory(self::TEMP_FOLDER . '/' . $temp_folder);
         }
     }
 
@@ -79,23 +108,23 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
         try {
             // Extract the ZIP in place
             $zip = new \ZipArchive;
-            if ($zip->open(TEMP_FOLDER . '/' . $tmp_filename) === TRUE) {
+            if ($zip->open(self::TEMP_FOLDER . '/' . $tmp_filename) === TRUE) {
                 // Get the parent folder name
                 $module_info->parent_folder_name = rtrim($zip->getNameIndex(0), '/');
                 // Extract the ZIP file in place
-                $zip->extractTo(TEMP_FOLDER);
+                $zip->extractTo(self::TEMP_FOLDER);
                 $zip->close();
             } else {
                 throw new ModuleInstallerException("The ZIP file could not be opened.");
             }
 
             // Check that the module contains a config.json file and read it
-            if (!file_exists(TEMP_FOLDER . '/' . $module_info->parent_folder_name . '/config.json')) {
+            if (!file_exists(self::TEMP_FOLDER . '/' . $module_info->parent_folder_name . '/config.json')) {
                 throw new ModuleInstallerException("The ZIP file does not contain a config.json file.");
             }
 
             // Get the module name from the config.json file
-            $config = json_decode(file_get_contents(TEMP_FOLDER . '/' . $module_info->parent_folder_name . '/config.json'), true);
+            $config = json_decode(file_get_contents(self::TEMP_FOLDER . '/' . $module_info->parent_folder_name . '/config.json'), true);
 
             if (!isset($config['name'])) {
                 throw new ModuleInstallerException("The config.json file does not contain a name.");
@@ -136,7 +165,7 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
         try {
             // Rename the parent folder of the zip to the module path
             $zip = new \ZipArchive;
-            if ($zip->open(TEMP_FOLDER . DIRECTORY_SEPARATOR . $tmp_filename) !== TRUE) {
+            if ($zip->open(self::TEMP_FOLDER . DIRECTORY_SEPARATOR . $tmp_filename) !== TRUE) {
                 throw new ModuleInstallerException("The ZIP file could not be opened.");
             }
             $i = 0;
@@ -148,7 +177,7 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
 
             // Now extract the zip to the modules folder
             $zip = new \ZipArchive;
-            if ($zip->open(TEMP_FOLDER . DIRECTORY_SEPARATOR . $tmp_filename) === TRUE) {
+            if ($zip->open(self::TEMP_FOLDER . DIRECTORY_SEPARATOR . $tmp_filename) === TRUE) {
                 $zip->extractTo(APP_PATH_EXTERNAL_MODULES);
                 $zip->close();
             } else {

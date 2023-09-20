@@ -6,9 +6,11 @@
 - [ ] Correctly test if the user has module installation rights
 - [x] Validate path and version
 - [ ] Translations (English and French)
-- [ ] Clean the temporary directory (at step 1? Module enabling ?)
+- [x] Clean the temporary directory (at step 1? Module enabling ?)
 - [ ] README, with a fancy gif (Mathilde)
 - [ ] Tests
+- [ ] Finalize the config.json 
+- [ ] Finalize the LICENCE
 - [ ] Mirror the repo on github in the ICM organization
 - [ ] Build a release (on github)
 - [ ] Submit to REDCap ext module repo
