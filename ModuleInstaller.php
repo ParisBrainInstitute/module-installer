@@ -122,10 +122,10 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
     {
         $module_path = $module_info->path . '_v' . $module_info->version;
 
-        // TODO: allow? With a warning?
         // Check if the module already exists
         if (file_exists(APP_PATH_EXTERNAL_MODULES . '/' . $module_path)) {
-            throw new ModuleInstallerException("The module already exists in $module_path.");
+            throw new ModuleInstallerException("<strong>The module already exists in $module_path.</strong><br>
+             Please uninstall it first, or choose a different path and/or version.");
         }
 
         try {

@@ -37,4 +37,4 @@ $form .= RCView::div(array('class'=>'form-group row mb-4'),
     )
 );
 
-echo RCView::form(['method' => 'post', 'action' => '', 'style' => 'margin-bottom: 20px;'], $form);
+echo RCView::form(['method' => 'post', 'action' => ''], $form);

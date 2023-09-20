@@ -109,23 +109,23 @@ if (!empty($global_warnings)) {
 
 switch ($step) {
     case 0:
-        // TODO Info about the module
+        include '_presentation.php';
         // Upload a ZIP file
         echo "<div class='my-4 p-4 border'>";
-        include 'form-upload.php';
+        include '_form-upload.php';
         echo "</div>";
         break;
     case 1:
         // Info about the module, and warnings about the installation
-        include 'module-info.php';
+        include '_module-info.php';
         // Fill in the path and version of the module
         echo "<div class='my-4 p-4 border'>";
-        include 'form-install.php';
+        include '_form-install.php';
         echo "</div>";
         break;
     case 2:
         // Confirm the installation
-        include 'confirmation.php';
+        include '_confirmation.php';
         break;
 }
 
