@@ -7,10 +7,10 @@
 - [x] Validate path and version
 - [ ] Translations (English and French)
 - [x] Clean the temporary directory (at step 1? Module enabling ?)
-- [ ] README, with a fancy gif
+- [x] README, with a fancy gif
 - [ ] Tests
-- [ ] Finalize the config.json 
-- [ ] Finalize the LICENCE
+- [x] Finalize the config.json 
+- [x] Finalize the LICENCE
 - [ ] Mirror the repo on github in the ICM organization
 - [ ] Build a release (on github)
 - [ ] Submit to REDCap ext module repo

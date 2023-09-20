@@ -5,8 +5,6 @@
 
 	"description": "Enables installing external modules from zip files, uploaded or fetched from an url.",
 
-	"framework-version": 7,
-
 	"documentation": "README.md",
 
 	"authors": [		{
@@ -15,6 +13,8 @@
 			"institution": "ICM - Paris Brain Institute"
 		}
 	],
+
+	"framework-version": 7,
 
 	"permissions": [
 		"redcap_module_system_disable"
@@ -39,18 +39,16 @@
 	],
 
 	"project-settings": [
-
 	],
 
 	"system-settings": [
-
 	],
 
 	"crons": [
 	],
 
 	"compatibility": {
-		"php-version-min": "",
+		"php-version-min": "7.4.0",
 		"php-version-max": "",
 		"redcap-version-min": "",
 		"redcap-version-max": ""
