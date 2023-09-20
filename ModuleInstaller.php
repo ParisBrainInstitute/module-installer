@@ -65,6 +65,13 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
         unlink(TEMP_FOLDER . '/' . $temp_filename);
     }
 
+    public function deleteTempFolder($temp_folder)
+    {
+        if (is_dir(TEMP_FOLDER . '/' . $temp_folder)) {
+            delete_directory(TEMP_FOLDER . '/' . $temp_folder);
+        }
+    }
+
     public function getModuleInformationFromZip($tmp_filename): ModuleInformation
     {
         $module_info = new ModuleInformation();
@@ -110,9 +117,7 @@ class ModuleInstaller extends \ExternalModules\AbstractExternalModule
         catch (ModuleInstallerException $e) {
             throw new ModuleInstallerException($e->getMessage());
         } finally {
-            if (is_dir(TEMP_FOLDER . '/' . $module_info->parent_folder_name)) {
-                delete_directory(TEMP_FOLDER . '/' . $module_info->parent_folder_name);
-            }
+            $this->deleteTempFolder($module_info->parent_folder_name);
         }
 
         return $module_info;

@@ -12,21 +12,23 @@ echo RCView::p(['class' => 'mb-4'], "The module will be installed in the followi
 $module_path = (isset($_POST['module_path'])) ? $_POST['module_path'] : (isset($module_info) ? $module_info->path : '');
 $module_version = (isset($_POST['module_version'])) ? $_POST['module_version'] : (isset($module_info) ? $module_info->version : '');
 
-$form = RCView::div(array('class'=>'form-group row my-4'),
-        RCView::label(['for' => 'module_path', 'class' => 'col-3 col-form-label text-end'], 'Module path:') .
-        RCView::input(['type' => 'text', 'name' => 'module_path', 'id' => 'module_path', 'value' => $module_path, 'class' => 'form-control form-control-sm col-6'])
-);
+$form = "";
+
 if (isset($form_errors['module_path'])) {
     $form .= RCView::div(['class' => 'alert alert-danger p-1'], $form_errors['module_path']);
 }
+$form .= RCView::div(array('class'=>'form-group row my-4'),
+        RCView::label(['for' => 'module_path', 'class' => 'col-3 col-form-label text-end'], 'Module path:') .
+        RCView::input(['type' => 'text', 'name' => 'module_path', 'id' => 'module_path', 'value' => $module_path, 'class' => 'form-control form-control-sm col-6'])
+);
 
+if (isset($form_errors['module_version'])) {
+    $form .= RCView::div(['class' => 'alert alert-danger p-1'], $form_errors['module_version']);
+}
 $form .= RCView::div(array('class'=>'form-group row mb-4'),
     RCView::label(['for' => 'module_version', 'class' => 'col-3 col-form-label text-end'], 'Module version:') .
     RCView::input(['type' => 'text', 'name' => 'module_version', 'id' => 'module_version', 'value' => $module_version, 'class' => 'form-control form-control-sm col-6'])
 );
-if (isset($form_errors['module_version'])) {
-    $form .= RCView::div(['class' => 'alert alert-danger p-1'], $form_errors['module_version']);
-}
 
 $form .= RCView::hidden(['name' => 'tmp_filename', 'value' => $tmp_filename]);
 

@@ -30,32 +30,41 @@ if (isset($_POST['upload'])) {
         $form_errors['module_zip'] = "The uploaded file is not a ZIP file.";
     }
 
-    try {
-        $tmp_filename = $module->moveZipFileToTempLocation($_FILES['module_zip']['tmp_name']);
-        // Get module information
-        $module_info = $module->getModuleInformationFromZip($tmp_filename);
-    }
-    catch (ModuleInstallerException $e) {
-        $form_errors['module_zip'] = $e->getMessage();
-    }
-
     if (empty($form_errors)) {
-        $step = 1;
+        try {
+            $tmp_filename = $module->moveZipFileToTempLocation($_FILES['module_zip']['tmp_name']);
+            // Get module information
+            $module_info = $module->getModuleInformationFromZip($tmp_filename);
+        } catch (ModuleInstallerException $e) {
+            $form_errors['module_zip'] = $e->getMessage();
+            if (isset($tmp_filename)) {
+                $module->deleteTempZipFile($tmp_filename);
+            }
+            if (isset($module_info->parent_folder_name)) {
+                $module->deleteTempFolder($module_info->parent_folder_name);
+            }
+        }
     }
+    $step = (empty($form_errors)) ? 1 : 0;
 }
 // Form handling, part 2
 elseif (isset($_POST['install'])) {
-    // Validate the path
-    if (empty($_POST['module_path'])) {
+    // Validate the path: it must not be empty, and contain only letters, numbers, and underscores
+    $module_path = trim(REDCap::escapeHtml($_POST['module_path']));
+    if (empty($module_path)) {
         $form_errors['module_path'] = "The module path is required.";
     }
-    // TODO: validate the path only has letters, numbers and underscores
-    // Validate the version
-    if (empty($_POST['module_version'])) {
+    elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $module_path)) {
+        $form_errors['module_path'] = "The module path must contain only letters, numbers, and underscores.";
+    }
+    // Validate the version: it must not be empty, and follow the Semantic Versioning convention
+    $module_version = trim(REDCap::escapeHtml($_POST['module_version']));
+    if (empty($module_version)) {
         $form_errors['module_version'] = "The module version is required.";
     }
-    // TODO validate the version is in the format x.y.z
-
+    elseif (!preg_match('/^[0-9]+\.[0-9]+\.[0-9]+$/', $module_version)) {
+        $form_errors['module_version'] = "The module version must follow the Semantic Versioning convention (x.y.z).";
+    }
     $step = (empty($form_errors)) ? 2 : 1;
 }
 
@@ -95,7 +104,7 @@ if ($step == 2) {
 
 // HTML Rendering
 $title = '<i class="fas fa-cube"></i> ' . REDCap::escapeHtml('External Module Installer');
-echo RCView::h3(['class' => 'my-2'], $title);
+echo RCView::h3(['class' => 'mt-2 mb-3'], $title);
 
 // TODO A Breadcrumb with the current step
 

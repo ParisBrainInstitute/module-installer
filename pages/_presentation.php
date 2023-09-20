@@ -10,6 +10,6 @@ echo RCView::p([], 'The module will be installed in the REDCap module folder of 
 echo RCView::p([], "If a module with the same name and version already exists, you must 
 <a href='$ext_modules_url'>uninstall it</a> first from the Control Center.");
 echo RCView::p([], "After installation, you can <a href='$ext_modules_url'>enable the module</a> from the Control Center, as usual.");
-echo RCView::confBox('<strong>Warning:</strong> No verification is done on the zip file.'
-    . ' It is your responsibility to make sure that the zip file contains a valid and safe REDCap module.'
+echo RCView::confBox('<strong>Warning:</strong> No verification is done on the zip, except that it contains a config.json file under a parent directory.<br>'
+    . ' It is your responsibility to make sure that the zip file contains a valid and safe REDCap module.<br>'
     . ' NEVER INSTALL A MODULE FROM AN UNTRUSTED SOURCE!');
