@@ -5,8 +5,6 @@
 
 	"description": "Enables installing external modules from zip files, uploaded or fetched from an url.",
 
-	"framework-version": 7,
-
 	"documentation": "README.md",
 
 	"authors": [		{
@@ -16,7 +14,10 @@
 		}
 	],
 
+	"framework-version": 7,
+
 	"permissions": [
+		"redcap_module_system_disable"
 	],
 	
 	"enable-every-page-hooks-on-system-pages":false,	
@@ -28,7 +29,8 @@
 			{
 				"name": "Module Installer",
 				"icon": "fas fa-cube fs14",
-				"url": "pages/index.php"
+				"url": "pages/index.php",
+				"show-header-and-footer": true
 			}
 		]
 	},
@@ -37,18 +39,16 @@
 	],
 
 	"project-settings": [
-
 	],
 
 	"system-settings": [
-
 	],
 
 	"crons": [
 	],
 
 	"compatibility": {
-		"php-version-min": "",
+		"php-version-min": "7.4.0",
 		"php-version-max": "",
 		"redcap-version-min": "",
 		"redcap-version-max": ""
